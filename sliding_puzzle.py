@@ -219,8 +219,13 @@ class Puzzle:
         # return heappop(states)
 
     # check if current puzzle can be solved -
-    # by determing if the permutation is odd or even
-    # odd - unsolvable, even - solvable
+    # by determing if the amount of inversions is odd or even
+    # If dimension is odd, then puzzle is solvable if
+    # number of inversions is even in the input state.
+    # Likewise, if dimension is even:
+    # blank is on an even row AND odd number of inversions - solvable
+    # blank id on an odd row AND even number of inversions - solvable
+    # else - cannot be solved
     # time complexity - O(n^2)
     def isSolvable(self):
         table = [x for sublist in self.board for x in sublist]
@@ -234,12 +239,12 @@ class Puzzle:
             if(table[i] == 0):
                 blankRow = row
                 continue
-            for j in range(i+1, len(table)):
+            for j in range(i + 1, len(table)):
                 if(table[i] > table[j] and table[j] != 0):
                     counter += 1
         print "Number of inversions: ", counter
-        if (self.dimension %2 == 0):
-            if (blankRow %2 == 0):
+        if (self.dimension % 2 == 0):
+            if (blankRow % 2 == 0):
                 if (counter % 2 == 0):
                     print "can be solved!"
                 else:
@@ -252,6 +257,7 @@ class Puzzle:
             print "can be solved!"
         else:
             print "can not be solved"
+
 
 # A test showing a BFS solution (both BFS and A* return the same solution)
 test1 = Puzzle(4)
@@ -274,5 +280,7 @@ test4.board = [[6, 1, 3, 7], [2, 9, 8, 4], [5, 10, 0, 12], [13, 14, 11, 15]]
 test5 = Puzzle(4)
 test5.board = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 15, 14, 0]]
 
+test6 = Puzzle(4)
+test6.board = [[1, 2, 3, 5], [4, 6, 7, 8], [9, 11, 10, 12], [15, 13, 14, 0]]
 # An indication that everything is interpeted
 print "All done!"
