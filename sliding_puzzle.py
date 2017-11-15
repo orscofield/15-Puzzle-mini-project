@@ -1,5 +1,6 @@
 # Sliding Puzzle Solver ##
 # Made by Or Shlomo ##
+# 301588901 ##
 import math
 from heapq import heappush, heappop
 # On a NxN sized panel there are 2^N-1 numbered plates
@@ -141,7 +142,7 @@ class Puzzle:
                 children.append(newIns)
         return children
 
-    # BFS solution, runtime O(4^n)???
+    # BFS solution, runtime O(4^n) where n is the depth of the solution
     def solBFS(self):
         counter = 0
         head = self.getCopy()
@@ -163,12 +164,13 @@ class Puzzle:
 
     # A* solution
     # using real cost function g() which is the number of moves from the start
-    # and using heuristic function h() - cost from current state to solution
-
+    # and using heuristic function h1() and h2() -
+    # cost from current state to solution
+    # runtime has the same time complexity as BFS solution, O(4^n)
     def g(self):
         return len(self.path)
 
-    # heuristic 1 - misplaced tiles - how many tiles are in the wrong position
+    # heuristic 1 - Misplaced Tiles - how many tiles are in the wrong position
     def h1(self):
         count = 0
         for i in range(0, self.dimension):
@@ -215,8 +217,6 @@ class Puzzle:
                 else:
                     f = child.g() + child.h2()
                 heappush(states, (f, child))
-        # print "counter is: ", counter
-        # return heappop(states)
 
     # check if current puzzle can be solved -
     # by determing if the amount of inversions is odd or even
